@@ -1,11 +1,19 @@
-import { TourListComponent } from './components/tour-list/tour-list.component';
-import {Routes} from '@angular/router';
-import {TourDetailComponent} from './components/tour-detail/tour-detail.component';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import {TourListComponent} from './components/tour-list/tour-list.component';
+
 
 export const routes: Routes = [
-  { path: 'tours', component: TourListComponent },
-  { path: '', redirectTo: '/tours', pathMatch: 'full' },
-  { path: 'tour/:id', component: TourDetailComponent },
-{ path: '', redirectTo: '/tours', pathMatch: 'full' },
-{ path: '**', redirectTo: '/tours' } // hibakezeléshez
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'tours', component: TourListComponent },  // Itt szerepel a komponens
+  { path: '', redirectTo: '/tours', pathMatch: 'full' }  // Alapértelmezett route
 ];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }

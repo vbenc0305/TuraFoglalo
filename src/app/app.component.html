@@ -1,12 +1,27 @@
-<body>
-<header>
-  <h1>Utazási Portál</h1>
-</header>
-<main>
+<!-- auth-buttons -->
+<div class="auth-buttons">
+  <button mat-raised-button color="primary" [routerLink]="['/login']">Bejelentkezés</button>
+  <button mat-raised-button color="accent" [routerLink]="['/register']">Regisztráció</button>
+</div>
+
+<!-- tour-list -->
+<div class="tour-list">
+  <h2>Elérhető túrák</h2>
+
+  <!-- Üdvözlő üzenet a bejelentkezett felhasználónak -->
+  <div *ngIf="userName">
+    <p>Üdvözlünk, {{ userName }}!</p>  <!-- Üdvözlő üzenet -->
+  </div>
+
+  <!-- Dinamikus komponensmegjelenítés a router segítségével -->
   <router-outlet></router-outlet>
-  <!-- Vagy ha nem routerezünk, akkor ide teheted a TourList komponenst: -->
-</main>
-<footer>
-  <p>&copy; 2025 KotProg</p>
-</footer>
-</body>
+
+  <!-- Túralista -->
+  <div class="tour-cards" *ngIf="!userName">
+    <app-tour-card
+      *ngFor="let tour of tours"
+      [tour]="tour"
+      (tourSelected)="onTourSelected($event)">
+    </app-tour-card>
+  </div>
+</div>

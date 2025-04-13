@@ -1,0 +1,27 @@
+<!-- register.component.html -->
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Név</mat-label>
+    <input matInput placeholder="Add meg a neved" formControlName="name">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input matInput placeholder="pelda@domain.com" formControlName="email">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Jelszó</mat-label>
+    <input matInput type="password" placeholder="Írd be a jelszavad" formControlName="password">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Szerepkör</mat-label>
+    <mat-select formControlName="role">
+      <mat-option value="tourist">Turista</mat-option>
+      <mat-option value="guide">Idegenvezető</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit">Regisztráció</button>
+</form>

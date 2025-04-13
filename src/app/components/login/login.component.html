@@ -1,0 +1,18 @@
+<!-- login.component.html -->
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input matInput placeholder="pelda@domain.com" formControlName="email">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Jelszó</mat-label>
+    <input matInput type="password" placeholder="Írd be a jelszavad" formControlName="password">
+  </mat-form-field>
+
+  <button mat-raised-button color="accent" type="submit">Bejelentkezés</button>
+
+  <div *ngIf="loginError" style="color: red; margin-top: 10px;">
+    Hibás email vagy jelszó!
+  </div>
+</form>

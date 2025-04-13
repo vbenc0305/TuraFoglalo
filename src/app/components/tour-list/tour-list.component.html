@@ -1,6 +1,9 @@
+<!-- tour-list -->
 <div class="tour-list">
   <h2>Elérhető túrák</h2>
-  <div class="tour-cards">
+
+  <!-- Túralista csak akkor jelenik meg, ha nincs aktív komponens -->
+  <div class="tour-cards" *ngIf="!activeComponent">
     <app-tour-card
       *ngFor="let tour of tours"
       [tour]="tour"
