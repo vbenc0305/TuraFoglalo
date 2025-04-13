@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {NgIf} from '@angular/common';
+import {AppComponent} from '../../app.component';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +29,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private appComponent: AppComponent,
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +51,11 @@ export class LoginComponent implements OnInit {
             const userName = email.split('@')[0];  // A felhasználó nevének kiszedése
             sessionStorage.setItem('authToken', 'dummyAuthToken');  // Dummy authToken
             this.loginSuccess.emit(userName);  // Esemény kibocsátása
+            this.userService.setUserName(userName);  // Itt mentjük el
+            this.appComponent.onLoginSuccess(userName);
+            console.log("meghivtam bro")
             this.router.navigate(['/tours']);  // Navigálás a túrák oldalra
+
           } else {
             this.loginError = true;
             console.error('Hibás email vagy jelszó!');

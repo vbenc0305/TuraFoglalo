@@ -1,32 +1,34 @@
 import { Component } from '@angular/core';
 import {Router, RouterLink, RouterOutlet} from '@angular/router';
-import {TourCardComponent} from './components/tour-card/tour-card.component';
-import {MatButton} from '@angular/material/button';
-import {NgForOf, NgIf} from '@angular/common';
+import { TourCardComponent } from './components/tour-card/tour-card.component';
+import { MatButton } from '@angular/material/button';
+import { NgForOf, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   imports: [
-    RouterOutlet,
-    RouterLink,
     TourCardComponent,
-     MatButton,
+    MatButton,
     NgIf,
-    NgForOf
+    NgForOf,
+    RouterOutlet,
+    RouterLink
   ],
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   userName: string | null = null;  // A bejelentkezett felhasználó neve
-  tours: any;
+  tours: any[] = []; // Dummy túralista, ezt később valódi adatokkal helyettesítheted
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    console.log("username " +this.userName)
+  }
 
-  // Sikeres bejelentkezés esetén átállítjuk a felhasználó nevét és navigálunk
+  // Sikeres bejelentkezés esetén átállítjuk a felhasználó nevét
   onLoginSuccess(userName: string): void {
     this.userName = userName;  // Beállítjuk a felhasználó nevét
-    this.router.navigate(['/tours']);  // Navigálás a túrák oldalra
+    console.log("NYOMOM!");
   }
 
   // Túra kiválasztása
