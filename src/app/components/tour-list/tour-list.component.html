@@ -1,0 +1,10 @@
+<div class="tour-list">
+  <h2>Elérhető túrák</h2>
+  <div class="tour-cards">
+    <app-tour-card
+      *ngFor="let tour of tours"
+      [tour]="tour"
+      (tourSelected)="onTourSelected($event)">
+    </app-tour-card>
+  </div>
+</div>

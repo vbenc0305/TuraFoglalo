@@ -1,0 +1,20 @@
+<div class="tour-detail" *ngIf="tour; else loading">
+  <h2>{{ tour.name }}</h2>
+  <p><strong>Helyszín:</strong> {{ tour.location }}</p>
+  <p><strong>Időpont:</strong> {{ tour.date | date:'mediumDate' }}</p>
+  <p><strong>Ár:</strong> {{ tour.price | currency:'HUF' }}</p>
+  <p><strong>Leírás:</strong> {{ tour.description }}</p>
+  <p><strong>Időtartam:</strong> {{ tour.duration }} óra</p>
+  <p><strong>Nehézség:</strong> {{ tour.difficulty }}</p>
+  <p><strong>Max. résztvevők:</strong> {{ tour.maxParticipants }}</p>
+  <p><strong>Túravezető azonosító:</strong> {{ tour.guideId || 'Nincs megadva' }}</p>
+
+  <!-- Jelentkezem gomb Angular Material stílussal -->
+  <button>
+    Jelentkezem
+  </button>
+</div>
+
+<ng-template #loading>
+  <p>Betöltés...</p>
+</ng-template>

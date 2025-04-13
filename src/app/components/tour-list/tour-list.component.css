@@ -1,0 +1,56 @@
+/* Túralista konténer */
+.tour-list {
+  width: 100%;
+  padding: 40px 20px;
+  background: rgba(255, 255, 255, 0.1); /* enyhe átlátszó háttér */
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Lista fejléc */
+.tour-list h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.2em;
+  color: #ffcc00;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Grid elrendezés a kártyákhoz */
+.tour-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  justify-items: center;
+  padding: 10px;
+}
+
+/* Fade-in animáció a kártyákhoz */
+.tour-cards app-tour-card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reszponzív módosítás */
+@media (max-width: 768px) {
+  .tour-list h2 {
+    font-size: 1.8em;
+  }
+  .tour-cards {
+    grid-template-columns: 1fr;
+  }
+}

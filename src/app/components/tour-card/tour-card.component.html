@@ -1,0 +1,10 @@
+<div class="tour-card" (click)="selectTour()">
+  <div class="card-header">
+    <h3 class="tour-title">{{ tour.name }}</h3>
+  </div>
+  <div class="card-body">
+    <p class="tour-location"><strong>Helyszín:</strong> {{ tour.location }}</p>
+    <p class="tour-price"><strong>Ár:</strong> {{ tour.price | currency:'HUF' }}</p>
+    <p class="tour-description">{{ tour.description }}</p>
+  </div>
+</div>
