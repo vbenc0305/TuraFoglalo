@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import {Router, RouterLink, RouterOutlet} from '@angular/router';
+import { RouterLink, RouterOutlet} from '@angular/router';
 import { TourCardComponent } from './components/tour-card/tour-card.component';
 import { MatButton } from '@angular/material/button';
-import { NgForOf, NgIf } from '@angular/common';
+import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
+import {Observable} from 'rxjs';
+import {AuthService} from './shared/service/auth.service';
+import {MenuComponent} from './components/menu/menu.component';
 
 @Component({
   selector: 'app-root',
@@ -13,24 +16,25 @@ import { NgForOf, NgIf } from '@angular/common';
     NgIf,
     NgForOf,
     RouterOutlet,
-    RouterLink
+    RouterLink,
+    AsyncPipe,
+    MenuComponent
   ],
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
   userName: string | null = null;  // A bejelentkezett felhasználó neve
   tours: any[] = []; // Dummy túralista, ezt később valódi adatokkal helyettesítheted
+  isLoggedIn$:Observable<boolean>;
 
-  constructor(private router: Router) {
-    console.log("username " +this.userName)
+  constructor(public auth: AuthService) {
+    this.isLoggedIn$ = this.auth.isLoggedIn$;  // csak ez kell
   }
 
-  // Sikeres bejelentkezés esetén átállítjuk a felhasználó nevét
-  onLoginSuccess(userName: string): void {
-    this.userName = userName;  // Beállítjuk a felhasználó nevét
-    console.log("NYOMOM!");
+  onLogout() {
+    this.auth.signOut();
   }
-
   // Túra kiválasztása
   onTourSelected(tour: any): void {
     console.log('Kiválasztott túra:', tour);

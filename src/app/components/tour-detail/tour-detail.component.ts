@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TourService } from '../../services/tour.service';
 import { Tour } from '../../models/tour.model';
 import { switchMap } from 'rxjs/operators';
-import { CurrencyPipe, DatePipe } from '@angular/common';
+import {CurrencyPipe, DatePipe, NgIf} from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 
@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
   imports: [
     DatePipe,
     CurrencyPipe,
+    NgIf,
   ]
 })
 export class TourDetailComponent implements OnInit {

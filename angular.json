@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "KotProg": {
+    "kotprog": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "KotProg:build:production"
+              "buildTarget": "kotprog:build:production"
             },
             "development": {
-              "buildTarget": "KotProg:build:development"
+              "buildTarget": "kotprog:build:development"
             }
           },
           "defaultConfiguration": "development"
