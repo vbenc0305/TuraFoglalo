@@ -1,12 +1,15 @@
-export interface Tour{
-  id:string;
-  name:string;
-  location:string;
-  date:string;
-  duration:number; // Órákban
-  difficulty:'easy' | 'medium' | 'hard';
+import { Timestamp } from 'firebase/firestore';
+import {DocumentReference} from '@angular/fire/compat/firestore'; // Firebase Timestamp importálása
+
+export interface Tour {
+  id: string;
+  name: string;
+  location: string;
+  date: Timestamp; // Firebase Timestamp típus
+  duration: number; // Órákban
+  difficulty: 'easy' | 'medium' | 'hard';
   price: number;
-  guideId:string;
-  maxParticipants:number;
-  description:string;
+  guideId: DocumentReference;
+  maxParticipants: number;
+  description: string;
 }

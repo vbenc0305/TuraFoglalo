@@ -1,0 +1,50 @@
+/* Alap formázás */
+.tour-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fafafa;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Teljes szélességű mezők */
+.full-width {
+  width: 100%;
+}
+
+/* Gombcsoport igazítása */
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Reszponzív dizájn */
+@media (max-width: 600px) {
+  .tour-form {
+    padding: 1rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* Dátumválasztó külön stílusa */
+mat-form-field {
+  width: 100%;
+}
+
+/* Headline */
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  color: #3f51b5;
+}

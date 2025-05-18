@@ -1,40 +1,19 @@
-.menu {
+.menu-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  background: red; !important;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 1rem 2rem;
-  border-radius: 12px;
-  margin-bottom: 1.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  color: #ffffff;
+
+  flex-wrap: wrap;
 }
 
-.auth-buttons,
-.page-links {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
+.auth-buttons button,
+.page-links button {
+  margin: 0.25rem;
 }
 
-button {
-  border: none;
-  background-color: transparent;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: color 0.2s, transform 0.2s;
-}
-
-button:hover {
-  color: #004d40;
-  transform: scale(1.05);
-}
-
-button.active {
+.page-links .active {
   font-weight: bold;
-  color: #00796b;
-  text-decoration: underline;
+  border-bottom: 2px solid #fff;
 }

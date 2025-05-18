@@ -1,0 +1,94 @@
+<h2>Túra zerkesztése</h2>
+
+<form (ngSubmit)="onSubmit()" [formGroup]="tourForm" class="tour-form">
+
+  <!-- Név -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Túra neve</mat-label>
+    <input matInput formControlName="name" required />
+    <mat-error *ngIf="tourForm.get('name')?.invalid && (tourForm.get('name')?.touched || tourForm.get('name')?.dirty)">
+      A túra neve kötelező!
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Helyszín -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Helyszín</mat-label>
+    <input matInput formControlName="location" required />
+    <mat-error *ngIf="tourForm.get('location')?.invalid && (tourForm.get('location')?.touched || tourForm.get('location')?.dirty)">
+      A helyszín megadása kötelező!
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Dátum -->
+  <mat-form-field appearance="outline" class="date-field">
+    <mat-label>Válaszd ki a túra dátumát.</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="date" required />
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngIf="tourForm.get('date')?.invalid && (tourForm.get('date')?.touched || tourForm.get('date')?.dirty)">
+      Érvényes dátumot válassz!
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Időtartam (óra) -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Időtartam (óra)</mat-label>
+    <input matInput type="number" formControlName="duration" required min="1" />
+    <mat-error *ngIf="tourForm.get('duration')?.invalid && (tourForm.get('duration')?.touched || tourForm.get('duration')?.dirty)">
+      Adj meg egy érvényes időtartamot (legalább 1 óra)!
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Nehézség -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Nehézségi szint</mat-label>
+    <mat-select formControlName="difficulty" required>
+      <mat-option value="easy">Könnyű</mat-option>
+      <mat-option value="medium">Közepes</mat-option>
+      <mat-option value="hard">Nehéz</mat-option>
+    </mat-select>
+    <mat-error *ngIf="tourForm.get('difficulty')?.invalid && (tourForm.get('difficulty')?.touched || tourForm.get('difficulty')?.dirty)">
+      Válassz nehézségi szintet!
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Ár -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Ár (Ft)</mat-label>
+    <input matInput type="number" formControlName="price" required min="0" />
+    <mat-error *ngIf="tourForm.get('price')?.invalid && (tourForm.get('price')?.touched || tourForm.get('price')?.dirty)">
+      Adj meg egy érvényes árat!
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Résztvevők száma -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Max. résztvevők száma</mat-label>
+    <input matInput type="number" formControlName="maxParticipants" required min="1" />
+    <mat-error *ngIf="tourForm.get('maxParticipants')?.invalid && (tourForm.get('maxParticipants')?.touched || tourForm.get('maxParticipants')?.dirty)">
+      Adj meg egy érvényes résztvevőszámot (legalább 1)!
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Leírás -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Leírás</mat-label>
+    <textarea matInput rows="4" formControlName="description" required></textarea>
+    <mat-error *ngIf="tourForm.get('description')?.invalid && (tourForm.get('description')?.touched || tourForm.get('description')?.dirty)">
+      Írj egy rövid leírást a túráról!
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Gombok -->
+  <div class="button-group">
+    <button mat-raised-button color="primary" type="submit" [disabled]="tourForm.invalid">
+      Mentés
+    </button>
+
+    <button mat-stroked-button color="warn" type="button" (click)="onCancel()">
+      Mégsem
+    </button>
+  </div>
+</form>

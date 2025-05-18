@@ -12,13 +12,10 @@ import {MenuComponent} from './components/menu/menu.component';
   templateUrl: './app.component.html',
   imports: [
     TourCardComponent,
-    MatButton,
-    NgIf,
     NgForOf,
     RouterOutlet,
-    RouterLink,
-    AsyncPipe,
-    MenuComponent
+    MenuComponent,
+
   ],
   styleUrls: ['./app.component.css']
 })

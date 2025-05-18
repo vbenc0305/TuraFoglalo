@@ -94,7 +94,6 @@ export class RegisterComponent implements OnInit {
       this.authService.signUp(email, pw,userData)
         .then(userCredential => {
           console.log('Regisztráció sikeres:', userCredential);
-          this.authService.updateLoginStatus(true);
           this.router.navigate(['/tours']); // Átirányítás a túrák oldalra
 
 

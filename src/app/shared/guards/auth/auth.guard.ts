@@ -7,7 +7,7 @@ export const authGuard: CanActivateFn = (route, state) => {
     const router = inject(Router);
     const authService = inject(AuthService);
 
-    return authService.currentUser.pipe(
+    return authService.currentUser$.pipe(
       take(1),
       map(user => {
         if (user) {
@@ -25,7 +25,7 @@ export const publicGuard : CanActivateFn = (route, state) => {
     const router = inject(Router);
     const authService = inject(AuthService);
 
-    return authService.currentUser.pipe(
+    return authService.currentUser$.pipe(
       take(1),
       map(user => {
         if (!user) {

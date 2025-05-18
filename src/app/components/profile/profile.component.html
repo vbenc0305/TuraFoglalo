@@ -1,0 +1,46 @@
+<div *ngIf="isLoading" class="loading-container">
+  <p>Profil betöltése...</p>
+  <!-- Addhatsz ide spinner-t vagy egyéb animációt is, hogy a felhasználó lássa, hogy folyamatban van -->
+</div>
+
+<div *ngIf="!isLoading && user" class="profile-container">
+  <div class="user-info">
+    <h1>Üdvözöllek, {{ user.name }}!</h1>
+    <p>Email: {{ user.email }}</p>
+  </div>
+
+  <div class="stats">
+    <h3>Statisztikák</h3>
+    <ul>
+      <li><strong>Összes túra:</strong> {{ stats.total }}</li>
+      <li><strong>Jóváhagyott:</strong> {{ stats.confirmed }}</li>
+      <li><strong>Várakozó:</strong> {{ stats.pending }}</li>
+    </ul>
+  </div>
+
+  <div class="tours">
+    <h3>Foglalásaid</h3>
+    <div *ngIf="bookedTours.length === 0">
+      <p>Nincs foglalt túrád.</p>
+    </div>
+    <div *ngFor="let tour of bookedTours" class="tour-card" [routerLink]="['/tour', tour.id]">
+      <h4 >{{ tour.name }}</h4>
+      <p>
+        Statusz:
+        <span
+          [ngClass]="{
+      'confirmed': tour.bookingStatus==='confirmed',
+      'pending':   tour.bookingStatus==='pending',
+      'cancelled': tour.bookingStatus==='cancelled'
+    }"
+        >
+    {{ tour.bookingStatus | titlecase }}
+  </span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!isLoading && !user" class="error-container">
+  <p>Nem sikerült betölteni a profilodat. Kérlek próbáld újra később.</p>
+</div>

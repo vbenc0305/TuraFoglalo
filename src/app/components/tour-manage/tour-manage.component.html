@@ -1,0 +1,81 @@
+<!-- Új túra létrehozása gomb -->
+<div class="toolbar">
+  <button mat-raised-button color="primary"
+          routerLink="/createTour">
+    ➕ Új túra létrehozása
+  </button>
+</div>
+
+<!-- Material Table -->
+<table mat-table [dataSource]="tours" class="mat-elevation-z8">
+
+  <!-- Név oszlop -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Túra neve </th>
+    <td mat-cell        *matCellDef="let tour"> {{ tour.name }} </td>
+  </ng-container>
+
+  <!-- Dátum oszlop -->
+  <ng-container  matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef> 🗓️ Dátum </th>
+    <td mat-cell        *matCellDef="let tour">
+      {{ tour.date | tsToDate | date:'yyyy.MM.dd' }}
+
+    </td>
+  </ng-container>
+
+  <!-- Leírás oszlop -->
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef> 📝 Leírás </th>
+    <td mat-cell        *matCellDef="let tour"> {{ tour.description }} </td>
+  </ng-container>
+
+  <!-- Nehézség oszlop -->
+  <ng-container matColumnDef="difficulty">
+    <th mat-header-cell *matHeaderCellDef> ⚖️ Nehézség </th>
+    <td mat-cell        *matCellDef="let tour"> {{ tour.difficulty }} </td>
+  </ng-container>
+
+  <!-- Időtartam oszlop -->
+  <ng-container matColumnDef="duration">
+    <th mat-header-cell *matHeaderCellDef> 🕒 Időtartam (h) </th>
+    <td mat-cell        *matCellDef="let tour"> {{ tour.duration }} </td>
+  </ng-container>
+
+  <!-- Helyszín oszlop -->
+  <ng-container matColumnDef="location">
+    <th mat-header-cell *matHeaderCellDef> 📍 Helyszín </th>
+    <td mat-cell        *matCellDef="let tour"> {{ tour.location }} </td>
+  </ng-container>
+
+  <!-- Maximális résztvevők oszlop -->
+  <ng-container matColumnDef="maxParticipants">
+    <th mat-header-cell *matHeaderCellDef> 👥 Max. résztvevők </th>
+    <td mat-cell        *matCellDef="let tour"> {{ tour.maxParticipants }} </td>
+  </ng-container>
+
+  <!-- Ár oszlop -->
+  <ng-container matColumnDef="price">
+    <th mat-header-cell *matHeaderCellDef> 💰 Ár (HUF) </th>
+    <td mat-cell        *matCellDef="let tour"> {{ tour.price | number }} Ft </td>
+  </ng-container>
+
+  <!-- Műveletek oszlop (Edit/Delete) -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Műveletek </th>
+    <td mat-cell        *matCellDef="let tour">
+      <button mat-icon-button color="accent"
+              (click)="onEdit(tour.id)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn"
+              (click)="onDelete(tour.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- Header és sorok -->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row        *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

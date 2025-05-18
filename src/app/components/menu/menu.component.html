@@ -1,32 +1,54 @@
 <nav class="menu-bar">
-  <!-- Auth buttons -->
+  <!-- 1. Auth‑gombok -->
   <div class="auth-buttons">
     <button
       *ngIf="!(isLoggedIn$ | async)"
       mat-raised-button
       color="primary"
       [routerLink]="['/login']">
-      Bejelentkezés
+      🔑 Bejelentkezés
     </button>
     <button
       *ngIf="!(isLoggedIn$ | async)"
       mat-raised-button
       color="accent"
       [routerLink]="['/register']">
-      Regisztráció
+      📝 Regisztráció
     </button>
     <button
       *ngIf="isLoggedIn$ | async"
       mat-raised-button
       color="warn"
       (click)="onLogout()">
-      Kijelentkezés
+      🚪 Kijelentkezés
     </button>
   </div>
 
-  <!-- Oldal navigáció -->
+  <!-- 2. Általános navigáció -->
   <div class="page-links">
-    <button mat-button routerLink="/tours" routerLinkActive="active">🏞️ Túrák</button>
-    <!-- Ide jöhet később: profil, foglalások, stb. -->
+    <button
+      mat-raised-button
+      routerLink="/tours"
+      routerLinkActive="active">
+      🏞️ Túrák
+    </button>
+    <button
+      mat-raised-button
+      routerLink="/profile"
+      routerLinkActive="active">
+      👤 Profil
+    </button>
+  </div>
+
+  <!-- 3. Guide‑specifikus menüpont -->
+  <div class="page-links">
+    <button
+      *ngIf="isGuide$ | async"
+      mat-raised-button
+      color="accent"
+      routerLink="/tourManage"
+      routerLinkActive="active">
+      ⚙️ Túrák menedzselése
+    </button>
   </div>
 </nav>

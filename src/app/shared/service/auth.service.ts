@@ -1,118 +1,117 @@
-import { Injectable } from '@angular/core';
-import {Observable, from, BehaviorSubject} from 'rxjs';  // from importálása
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, from, Observable, of} from 'rxjs';
 import {
   Auth,
-  signOut,
   authState,
+  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  UserCredential,
+  signOut,
   User as FirebaseUser,
-  createUserWithEmailAndPassword
+  UserCredential
 } from '@angular/fire/auth';
-import { Router } from '@angular/router';
-import {Firestore, doc, getDoc, setDoc} from '@angular/fire/firestore';  // Firestore importálása
-import { switchMap } from 'rxjs/operators';  // switchMap importálása
-import { User } from '../../models/user.model';
+import {Router} from '@angular/router';
+import {doc, Firestore, getDoc, setDoc} from '@angular/fire/firestore';
+import {map, switchMap} from 'rxjs/operators';
+import {User} from '../../models/user.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  currentUser: Observable<User | null>;  // Observable<User | null> típussal
-  private loggedInSubject = new BehaviorSubject<boolean>(false);  // BehaviorSubject a bejelentkezési állapot kezelésére
+  /** Stream a Firestore-ból betöltött applikációs User objektumhoz */
+  public currentUser$: Observable<User | null>;
+
+  /** Bejelentkezett állapot követése */
+  private loggedInSubject = new BehaviorSubject<boolean>(false);
   public isLoggedIn$ = this.loggedInSubject.asObservable();
 
+  /** Túravezető jogosultság stream */
+  public isGuide$: Observable<boolean>;
 
   constructor(
     private auth: Auth,
-    private firestore: Firestore,  // Firestore szolgáltatás
-    private router: Router,
+    private firestore: Firestore,
+    private router: Router
   ) {
-    this.currentUser = authState(this.auth).pipe(
-      switchMap((firebaseUser) =>
-        from(this.mapFirebaseUserToAppUser(firebaseUser))  // from használata, hogy Promise-ból Observable legyen
-      )
+    // Követjük a Firebase authState-et, majd Firestore User-re váltunk
+    this.currentUser$ = authState(this.auth).pipe(
+      switchMap(firebaseUser => {
+        if (firebaseUser?.uid) {
+          return this.getAppUser(firebaseUser);
+        }
+        return of(null);
+      })
     );
-    this.auth.onAuthStateChanged(user => {
+
+    // Frissítjük a loggedInSubject-et
+    authState(this.auth).subscribe(user => {
       this.loggedInSubject.next(!!user);
     });
+
+    // Meghatározzuk, guide szerepkörű-e a felhasználó
+    this.isGuide$ = this.currentUser$.pipe(
+      map(user => !!user && user.role === 'guide')
+    );
   }
 
-  async signIn(email: string, password: string) {
-    const cred = await signInWithEmailAndPassword(this.auth, email, password);
-    this.loggedInSubject.next(true);
+  /** Bejelentkezés metódus */
+  async signIn(email: string, password: string): Promise<UserCredential> {
+    // A authState subscribe automatikusan kezeli a loggedInSubject-et és currentUser$
+    return await signInWithEmailAndPassword(this.auth, email, password);
+  }
+
+  /** Kijelentkezés */
+  async signOut(): Promise<void> {
+    await signOut(this.auth);
+    // A loggedInSubject false lesz az authState subscribe-ban
+  }
+  
+
+  /** Regisztráció */
+  async signUp(
+    email: string,
+    password: string,
+    userData: Partial<User>
+  ): Promise<UserCredential> {
+    const cred = await createUserWithEmailAndPassword(this.auth, email, password);
+    await this.createUserInFirestore(cred.user.uid, {
+      id: cred.user.uid,
+      email,
+      name: userData.name || '',
+      role: userData.role || 'tourist',
+      profilePicture: userData.profilePicture || '',
+      signedUpTours: []
+    });
     return cred;
   }
 
-  signOut() {
-    return signOut(this.auth).then(() => {
-      this.loggedInSubject.next(false);
-    });
+  /** Helper: FirebaseUser -> applikációs User (Observable) */
+  private getAppUser(
+    firebaseUser: FirebaseUser
+  ): Observable<User | null> {
+    const userRef = doc(this.firestore, 'Users', firebaseUser.uid);
+    return from(getDoc(userRef)).pipe(
+      switchMap(snapshot => {
+        if (!snapshot.exists()) return of(null);
+        const data = snapshot.data() as any;
+        const appUser: User = {
+          id: firebaseUser.uid,
+          name: data.name || firebaseUser.displayName || '',
+          email: data.email || firebaseUser.email || '',
+          password: '',
+          role: data.role || 'tourist',
+          profilePicture: data.profilePicture || '',
+          signedUpTours: data.signedUpTours || []
+        };
+        return of(appUser);
+      })
+    );
   }
 
-  isLoggedIn(): Observable<User | null> {
-    return this.currentUser;
-  }
-
-  updateLoginStatus(isLoggedIn: boolean): void {
-    localStorage.setItem('isLoggedIn', isLoggedIn ? 'true' : 'false');
-  }
-
-  private async mapFirebaseUserToAppUser(firebaseUser: FirebaseUser | null): Promise<User | null> {
-    if (firebaseUser) {
-      try {
-        // Firebase felhasználói adatokat átalakítjuk a saját User modellünkre
-        const userDocRef = doc(this.firestore, 'users', firebaseUser.uid);
-        const userDocSnapshot = await getDoc(userDocRef);  // await-elni kell, hogy a Promise feloldódjon
-
-        // Ha találunk felhasználót a Firestore-ban
-        if (userDocSnapshot.exists()) {  // Most már közvetlenül elérhető az exists() metódus
-          const userData = userDocSnapshot.data();
-
-          return {
-            id: firebaseUser.uid,
-            name: firebaseUser.displayName || 'Név nincs megadva',
-            email: firebaseUser.email || '',
-            password: '',  // A jelszó nem tárolódik Firebase-ben, nem töltjük le
-            role: userData?.['role'] || 'tourist',  // A role-t a Firestore-ból töltjük le
-            profilePicture: firebaseUser.photoURL || '',
-            signedUpTours: userData?.['signedUpTours'] || [],  // A signedUpTours-t a Firestore-ból töltjük le
-          };
-        }
-      } catch (error) {
-        console.error("Hiba történt a felhasználó adatainak betöltésekor:", error);
-        return null;  // Hiba esetén visszatérhetünk null értékkel
-      }
-    }
-    return null;
-  }
-
-  async signUp(email:string,password:string,userData:Partial<User>):Promise<UserCredential> {
-    try {
-      console.log("DEBUG: signUp userData:", userData, email,password);
-      const userCredential = await createUserWithEmailAndPassword(
-        this.auth,
-        email,
-        password
-      );
-      await this.createUserData(userCredential.user.uid, {
-        ...userData,
-        id: userCredential.user.uid,
-        email: email,
-        signedUpTours: []
-      });
-
-      return userCredential;
-    } catch (error) {
-      console.error("Hiba történt a regisztráció során:", error);
-      throw error;  // Hiba esetén dobjuk tovább a hibát
-    }
-  }
-
-  private async createUserData(userId: string, userData: Partial<User>):Promise<void> {
+  /** Helper: új felhasználó mentése Firestore-ba */
+  private async createUserInFirestore(
+    userId: string,
+    userData: Partial<User>
+  ): Promise<void> {
     const userRef = doc(this.firestore, 'Users', userId);
-    console.log("DEBUG: createUserData userRef:", userRef);
-    return setDoc(userRef, userData);
+    await setDoc(userRef, userData);
   }
 }
-

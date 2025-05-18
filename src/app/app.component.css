@@ -1,50 +1,20 @@
-/* Fejléc stílus */
-.header {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  padding: 16px 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+.tour-list {
+  padding: 2rem;
+  background-color: inherit; /* Átveszi a body háttérszínét */
+
 }
 
-.header-title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #ffcc00;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+.tour-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 
-/* Bejelentkezés gomb */
-.login-button {
-  background: #ffcc00;
-  color: #000;
-  font-weight: bold;
-  padding: 10px 16px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
 
-.login-button:hover {
-  background: #e6b800;
-  transform: scale(1.05);
+:host {
+  /* ezzel block szintűvé változtatod az <app-root>-ot */
+  display: block;
+  /* opcionálisan kiterjeszted 100% magasságra */
+  min-height: 100vh;
 }
-
-/* Általános elrendezés a router-outlet alá */
-main {
-  width: 100%;
-  padding: 20px 0;
-}
-
-header, footer {
-  text-align: center;
-  width: 100%;
-  padding: 10px 0;
-}
-
