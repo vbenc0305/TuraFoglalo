@@ -11,10 +11,8 @@ import {CurrencyPipe} from '@angular/common';
   styleUrls: ['./tour-card.component.css']
 })
 export class TourCardComponent {
-  // Szülőből kapott adat (egy túra objektum)
   @Input() tour!: Tour;
 
-  // Esemény kibocsátása, amikor a túra kiválasztásra kerül
   @Output() tourSelected = new EventEmitter<Tour>();
 
   selectTour() {

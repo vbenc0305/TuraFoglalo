@@ -1,59 +1,107 @@
-# KotProg
+**A projekt linkje: https://turafoglalo-77c74.firebaseapp.com/**
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.5.
+## 🛠️ Általános
+> - ✅ *Fordítási hiba:* **0**  
+> - ✅ *Futtatási hiba:* **0**
 
-## Development server
+---
 
-To start a local development server, run:
+## 📦 Adatmodellek (`src/app/models/`)  
+| Modell fájl neve                | Leírás                                       |
+|---------------------------------|----------------------------------------------|
+| `booking.model.ts`              | Foglalás adatstruktúra                       |
+| `tour.model.ts`                 | Túra alapadatai                              |
+| `TourWithBookings.model.ts`     | Túra + kapcsolódó foglalások listája         |
+| `user.model.ts`                 | Felhasználói profiladatok                    |
 
-```bash
-ng serve
-```
+---
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## ✨ Attribute Directive‑ök  
+| Direktíva             | Fájl                                               |
+|-----------------------|----------------------------------------------------|
+| `[matDatepicker]`     | `components/create-tour/create-tour.component.html`|
+| `[formGroup]`         | `components/login/login.component.html`           |
+| `[routerLink]`        | `components/menu/menu.component.html`             |
+| `[ngClass]`           | `components/profile/profile.component.html`       |
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🔄 Vezérlési folyamatok  
+- **`*ngIf`** használat:  
+  - Fájl: `components/create-tour/tour.component.html`  
+  - **4+** különböző feltételvezérlés  
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🔄 Adatátadás  
+- **Input**: 1 darab  
+- **Output**: 1 darab  
+- **Komponens**: `tour-card.component.ts`  
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+## 🎨 Angular Material elemek (10 db)  
+| #  | Elem                     | Fájl                                                 |
+|----|--------------------------|------------------------------------------------------|
+| 1  | `mat-form-field`         | `create-tour.component.html`                         |
+| 2  | `mat-label`              | `create-tour.component.html`                         |
+| 3  | `mat-error`              | `create-tour.component.html`                         |
+| 4  | `mat-hint`               | `create-tour.component.html`                         |
+| 5  | `mat-datepicker-toggle`  | `create-tour.component.html`                         |
+| 6  | `mat-datepicker`         | `create-tour.component.html`                         |
+| 7  | `mat-option`             | `create-tour.component.html`                         |
+| 8  | `mat-select`             | `create-tour.component.html`                         |
+| 9  | `ng-container`           | `tour-detail.component.html`                         |
+| 10 | `ng-template`            | `tour-detail.component.html`                         |
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+## 🛠️ Egyedi Pipe  
+> **`TimeStampToDatePipe`**  
+> - Elérési út: `src/shared/pipes/TimeStampToDatePipe.ts`  
+> - Használat: `tour-manage.component.html`
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## 📝 Űrlapok (Reactive Forms) – **4 db**  
+1. Tour létrehozása / szerkesztése  
+   - `components/create-tour/create-tour.component.ts`  
+   - *Megjegyzés:* editnél fake-update logika  
+2. Bejelentkezés  
+   - `components/login/login.component.ts`  
+3. Regisztráció  
+   - `components/register/register.component.ts`  
+4. ÚjraTour form (ugyanaz, de külön logika)
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+---
 
-```bash
-ng test
-```
+## 🔧 CRUD műveletek  
+- **Create** → `create-tour` komponens  
+- **Read**   → `tour-service.getTourById()`  
+- **Update** → `tour-service.updateTour()`  
+- **Delete** → `tour-service.deleteTour()`
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
+## 🗺️ Route‑ok – **4 útvonal**  
+- Fájl: `src/app/app-routing.module.ts`  
 
-```bash
-ng e2e
-```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## 🔍 Komplex lekérdezések
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+* **TourService**
+
+  * `getTourById(id: string): Observable<Tour>`
+* **BookingService**
+
+  * `loadBookingsByUser(userId: string): Observable<Booking[]>`
+  * `getSignedUpTours(userId: string): Observable<Tour[]>`
+  * `cancelBooking(bookingId: string): Observable<void>`
+
+---
+
+## 🛡️ Auth Guard - yes
+
+
